@@ -21,6 +21,7 @@ const createHeading = (displayName: string, defaultClassName: string) => {
             textarea.style.height = `${textarea.scrollHeight}px`;
           };
           textarea.addEventListener("input", adjustHeight);
+          adjustHeight();
           return () => textarea.removeEventListener("input", adjustHeight);
         }
       }, [isPreview]);
@@ -29,7 +30,7 @@ const createHeading = (displayName: string, defaultClassName: string) => {
       return (
         <textarea
           className={cn(
-            `w-full bg-transparent ${defaultClassName} ${previewClassName} font-normal text-gray-900 placeholder:text-gray-300 focus:outline-none resize overflow-hidden leading-tight`,
+            `w-full bg-transparent ${defaultClassName} ${previewClassName} font-normal text-gray-900 placeholder:text-gray-300 focus:outline-none resize-none overflow-hidden leading-tight`,
             className
           )}
           style={{

@@ -230,6 +230,7 @@ const CreateAI = ({ onBack }: Props) => {
         selectedCard={selectedcard}
         editText={editText}
         onEditChange={setEditText}
+        setEditText={setEditText}
         onCardSelect={setSelectedCard}
         setEditingCard={setEditingCard}
         setSelectedCard={setSelectedCard}

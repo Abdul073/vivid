@@ -33,6 +33,7 @@ const ThemeCard = ({
         transition: {
           type: "spring",
           stiffness: 300,
+          damping: 30,
           delay: 0.1,
         },
       },

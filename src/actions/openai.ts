@@ -7,8 +7,12 @@ import OpenAI from "openai";
 import { v4 as uuidv4 } from "uuid";
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY!,
 });
+console.log(
+  "🔍 OpenAI API Key:",
+  process.env.OPENAI_API_KEY ? "Set" : "Missing"
+);
 
 export const generateCreativePrompt = async (userPrompt: string) => {
   const openai = new OpenAI({
@@ -115,7 +119,7 @@ const existingLayouts = [
               type: "image" as ContentType,
               name: "Image",
               content:
-                "https://plus.unsplash.com/premium_photo-1729004379397-ece899804701?q=80&w=2767&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                "https://images.unsplash.com/photo-1620987278429-ab178d6eb547?q=80&w=1925&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
               alt: "Title",
             },
             {
@@ -192,7 +196,7 @@ const existingLayouts = [
               name: "Image",
               restrictToDrop: true,
               content:
-                "https://plus.unsplash.com/premium_photo-1729004379397-ece899804701?q=80&w=2767&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                "https://images.unsplash.com/photo-1620987278429-ab178d6eb547?q=80&w=1925&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
               alt: "Title",
             },
           ],
@@ -228,7 +232,7 @@ const existingLayouts = [
                   name: "Image",
                   className: "p-3",
                   content:
-                    "https://plus.unsplash.com/premium_photo-1729004379397-ece899804701?q=80&w=2767&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                    "https://images.unsplash.com/photo-1620987278429-ab178d6eb547?q=80&w=1925&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                   alt: "Title",
                 },
               ],
@@ -312,7 +316,7 @@ const existingLayouts = [
                   name: "Image",
                   className: "p-3",
                   content:
-                    "https://plus.unsplash.com/premium_photo-1729004379397-ece899804701?q=80&w=2767&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                    "https://images.unsplash.com/photo-1620987278429-ab178d6eb547?q=80&w=1925&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                   alt: "Title",
                 },
               ],
@@ -513,6 +517,12 @@ const generateImageUrl = async (prompt: string): Promise<string> => {
 
     return dalleResponse.data[0]?.url || "https://via.placeholder.com/1024";
   } catch (error) {
+    console.error(
+      "🔴 Failed to generate image for prompt:",
+      prompt,
+      "Error:",
+      error
+    );
     console.error("Failed to generate image:", error);
     return "https://via.placeholder.com/1024";
   }
@@ -640,7 +650,7 @@ ${JSON.stringify([
               type: "image" as ContentType,
               name: "Image",
               content:
-                "https://plus.unsplash.com/premium_photo-1729004379397-ece899804701?q=80&w=2767&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                "https://images.unsplash.com/photo-1620987278429-ab178d6eb547?q=80&w=1925&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
               alt: "Title",
             },
             {

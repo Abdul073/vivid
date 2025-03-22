@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { EllipsisVertical, Trash2 } from "lucide-react";
+import { MasterRecursiveComponent } from "./MasterRecursiveComponent";
 
 interface DropZoneProps {
   index: number;
@@ -113,7 +114,7 @@ export const DraggableSlide: React.FC<DraggableSlideProps> = ({
     <div
       ref={ref}
       className={cn(
-        "w-full rounded-lg shadow-lg relative p-4 min-h-[400px] max-h-[800px]",
+        "w-full rounded-lg shadow-lg relative p-0 min-h-[400px] max-h-[800px]",
         "shadow-xl transition-shadow duration-300",
         "flex flex-col",
         index === currentSlide ? "ring-2 ring-blue-500 ring-offset-2" : "",
@@ -121,20 +122,18 @@ export const DraggableSlide: React.FC<DraggableSlideProps> = ({
         isDragging ? "opacity-50" : "opacity-100"
       )}
       style={{
-        backgroundImage:
-          currentTheme.gradientBackground ||
-          "linear-gradient(to right, #f0f0f0, #e0e0e0",
+        backgroundImage: currentTheme.gradientBackground,
       }}
       onClick={() => setCurrentSlide(index)}
     >
       <div className="h-full w-full flex-grow overflow-auto">
-        {/* <MasterRecursiveComponent
+        <MasterRecursiveComponent
           content={slide.content}
           isPreview={false}
           slideId={slide.id}
           isEditable={isEditable}
           onContentChange={handleContentChange}
-        /> */}
+        />
       </div>
       {isEditable && (
         <Popover>
@@ -222,6 +221,7 @@ const Editor = ({ isEditable }: Props) => {
   useEffect(() => {
     if (typeof window !== "undefined") setLoading(false);
   }, []);
+
   return (
     <div className="flex-1 flex flex-col h-full max-w-3xl mx-auto px-4 mb-20">
       {loading ? (

@@ -24,7 +24,7 @@ const Switch = React.forwardRef<
       {/* Moon Icon (Visible in Unchecked State) */}
       <Moon
         className={cn(
-          "h-3 w-3 absolute left-1 transition-opacity duration-300 ease-in-out stroke-gray-600 fill-white",
+          "h-3 w-3 absolute left-1 transition-opacity duration-300 ease-in-out stroke-gray-600",
           "data-[state=checked]:opacity-0 data-[state=unchecked]:opacity-100"
         )}
       />
@@ -32,29 +32,29 @@ const Switch = React.forwardRef<
       {/* Sun Icon (Visible in Checked State) */}
       <Sun
         className={cn(
-          "h-3 w-3 absolute right-1 transition-all duration-300 ease-in-out stroke-gray-400",
-          "data-[state=checked]:stroke-black data-[state=unchecked]:stroke-gray-300"
+          "h-3 w-3 absolute right-1 transition-opacity duration-300 ease-in-out stroke-gray-400",
+          "data-[state=checked]:opacity-100 data-[state=unchecked]:opacity-0"
         )}
       />
 
       {/* Switch Thumb (Moving Button) */}
       <SwitchPrimitives.Thumb
         className={cn(
-          "pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 relative flex items-center justify-center",
-          "transition-transform duration-300 ease-in-out",
-          "data-[state=checked]:translate-x-[1.25rem] data-[state=unchecked]:translate-x-0"
+          "pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0",
+          "transition-transform duration-300 ease-in-out transform",
+          "data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0"
         )}
       >
         {/* Dynamic Icons inside the Thumb */}
         <Moon
           className={cn(
-            "h-2 w-2 absolute transition-opacity duration-300 ease-in-out stroke-gray-600",
+            "h-2 w-2 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 ease-in-out stroke-gray-600",
             "data-[state=checked]:opacity-0 data-[state=unchecked]:opacity-100"
           )}
         />
         <Sun
           className={cn(
-            "h-2 w-2 absolute transition-opacity duration-300 ease-in-out stroke-black fill-black",
+            "h-2 w-2 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 ease-in-out stroke-black",
             "data-[state=checked]:opacity-100 data-[state=unchecked]:opacity-0"
           )}
         />

@@ -41,7 +41,7 @@ const Navbar = ({ presentationId }: Props) => {
           style={{ backgroundColor: currentTheme.backgroundColor }}
         >
           <Home />
-          <span className=" hidden sm:inline">Return home</span>
+          <span className="hidden sm:inline">Return home</span>
         </Button>
       </Link>
       <Link

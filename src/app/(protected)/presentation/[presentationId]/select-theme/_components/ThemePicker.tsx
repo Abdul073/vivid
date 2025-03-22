@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Theme } from "@/lib/types";
 import { useSlideStore } from "@/store/useSlideStore";
-import { Loader, Loader2, Wand2 } from "lucide-react";
+import { Loader2, Wand2 } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { toast } from "sonner";
@@ -42,15 +42,13 @@ const ThemePicker = ({ onThemeSelect, selectedTheme, themes }: Props) => {
     try {
       const res = await generateLayouts(
         params.presentationId as string,
-        selectedTheme.name
+        currentTheme.name
       );
 
       if (res.status !== 200 && !res?.data) {
         throw new Error("Failed to generate layouts");
       }
 
-      setSlides(res.data);
-      setCurrentTheme(selectedTheme);
       toast.success("Success", {
         description: "Layouts generated successfully",
       });
@@ -59,8 +57,7 @@ const ThemePicker = ({ onThemeSelect, selectedTheme, themes }: Props) => {
       setSlides(res.data);
     } catch (error) {
       toast.error("Error", {
-        description:
-          error instanceof Error ? error.message : "Failed to generate layouts",
+        description: "Failed to generate layouts",
       });
     } finally {
       setLoading(false);
@@ -92,7 +89,7 @@ const ThemePicker = ({ onThemeSelect, selectedTheme, themes }: Props) => {
           </p>
         </div>
         <Button
-          className="w-full h-12 text-lg font-medium shadow-md hover:shadow-lg transition-all duration-300"
+          className="w-full h-12 text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300"
           style={{
             backgroundColor: selectedTheme.accentColor,
             color: selectedTheme.backgroundColor,
@@ -124,7 +121,7 @@ const ThemePicker = ({ onThemeSelect, selectedTheme, themes }: Props) => {
                 onClick={() => {
                   onThemeSelect(theme);
                 }}
-                className="flex flex-col items-start justify-start p-6 w-full h-auto"
+                className="flex flex-col items-center justify-start p-6 w-full h-auto"
                 style={{
                   fontFamily: theme.fontFamily,
                   color: theme.fontColor,
@@ -132,7 +129,7 @@ const ThemePicker = ({ onThemeSelect, selectedTheme, themes }: Props) => {
                     theme.gradientBackground || theme.backgroundColor,
                 }}
               >
-                <div className="w-full flex items-center justify-between mb-2">
+                <div className="w-full flex items-center justify-between">
                   <span className="text-xl font-bold">{theme.name}</span>
                   <div
                     className="w-3 h-3 rounded-full"
@@ -140,14 +137,17 @@ const ThemePicker = ({ onThemeSelect, selectedTheme, themes }: Props) => {
                   />
                 </div>
 
-                <div
-                  className="space-y-1 font-bold"
-                  style={{ color: theme.accentColor }}
-                >
-                  Title
-                </div>
-                <div className="text-base opacity-80">
-                  Body & <span style={{ color: theme.accentColor }}>link</span>
+                <div className="space-y-1 w-full">
+                  <div
+                    className="text-2xl font-bold"
+                    style={{ color: theme.accentColor }}
+                  >
+                    Title
+                  </div>
+                  <div className="text-base opacity-80">
+                    Body &{" "}
+                    <span style={{ color: theme.accentColor }}>link</span>
+                  </div>
                 </div>
               </Button>
             </motion.div>
