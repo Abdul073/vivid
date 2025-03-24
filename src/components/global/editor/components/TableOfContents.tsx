@@ -15,7 +15,13 @@ const TableOfContents = ({ items, onItemClick, className }: Props) => {
     <nav
       className={cn("space-y-2", className)}
       style={{ color: currentTheme.fontColor }}
-    ></nav>
+    >
+      {items.map((item, idx) => (
+        <div key={idx} className={cn("cursor-pointer hover:underline")}>
+          {item}
+        </div>
+      ))}
+    </nav>
   );
 };
 

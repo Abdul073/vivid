@@ -9,7 +9,7 @@ export function cn(...inputs: ClassValue[]) {
 export const timeAgo = (timeStamp: string) => {
   const now = new Date();
   const diffInSeconds = Math.floor(
-    now.getTime() - new Date(timeStamp).getTime() / 1000
+    (now.getTime() - new Date(timeStamp).getTime()) / 1000
   );
   const intervals = [
     { label: "year", value: 60 * 60 * 24 * 365 },

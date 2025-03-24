@@ -22,6 +22,8 @@ import NumberList, {
 } from "@/components/global/editor/components/ListComponent";
 import CalloutBox from "@/components/global/editor/components/CalloutBox";
 import CodeBlock from "@/components/global/editor/components/CodeBlock";
+import TableOfContents from "@/components/global/editor/components/TableOfContents";
+import Divider from "@/components/global/editor/components/Divider";
 
 type MasterRecursiveComponentProps = {
   content: ContentItem;
@@ -201,19 +203,6 @@ const ContentRendered: React.FC<MasterRecursiveComponentProps> = React.memo(
           </motion.div>
         );
 
-      case "tableOfContents":
-        return (
-          <motion.div {...animationProps} className="w-full h-full">
-            <TableOfContents
-              items={content.content as string}
-              onItemClick={(id) => {
-                console.log(`Navigate to section: ${id}`);
-              }}
-              className={content.className}
-            />
-          </motion.div>
-        );
-
       case "codeBlock":
         return (
           <motion.div {...animationProps} className="w-full h-full">
@@ -223,6 +212,26 @@ const ContentRendered: React.FC<MasterRecursiveComponentProps> = React.memo(
               onChange={() => {}}
               className={content.className}
             />
+          </motion.div>
+        );
+
+      case "tableOfContents":
+        return (
+          <motion.div {...animationProps} className="w-full h-full">
+            <TableOfContents
+              items={content.content as string[]}
+              onItemClick={(id) => {
+                console.log(`Navigate to section: ${id}`);
+              }}
+              className={content.className}
+            />
+          </motion.div>
+        );
+
+      case "divider":
+        return (
+          <motion.div {...animationProps} className="w-full h-full">
+            <Divider className={content.className as string} />
           </motion.div>
         );
 

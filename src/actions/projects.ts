@@ -4,6 +4,7 @@ import { client } from "@/lib/prisma";
 import { onAuthenticateUser } from "./user";
 import { Project } from "@prisma/client";
 import { OutlineCard } from "@/lib/types";
+import { JsonValue } from "@prisma/client/runtime/library";
 
 export const getAllProjects = async () => {
   try {
@@ -173,5 +174,130 @@ export const getProjectById = async (projectId: string) => {
   } catch (error) {
     console.error("🔴ERROR", error);
     return { status: 500, error: "Internal Server Error" };
+  }
+};
+
+export const updateSlides = async (projectId: string, slides: JsonValue) => {
+  try {
+    if (!projectId || !slides) {
+      return { status: 400, error: "Project ID and slides are requrired." };
+    }
+    const updatedProject = await client.project.update({
+      where: {
+        id: projectId,
+      },
+      data: {
+        slides,
+      },
+    });
+
+    if (!updatedProject) {
+      return { status: 500, error: "Failed tp update slides" };
+    }
+    return { status: 200, data: updateSlides };
+  } catch (error) {
+    console.error("🔴Error", error);
+    return { status: 500, error: "Inernal server error" };
+  }
+};
+
+export const updateTheme = async (projectId: string, theme: string) => {
+  try {
+    if (!projectId || !theme) {
+      return { status: 400, error: "Project ID and slides are required." };
+    }
+    const updatedProject = await client.project.update({
+      where: {
+        id: projectId,
+      },
+      data: {
+        themeName: theme,
+      },
+    });
+    if (!updatedProject) {
+      return { status: 500, error: "Failed to update slides" };
+    }
+    return { status: 200, data: updatedProject };
+  } catch (error) {
+    console.error("🔴Error", error);
+    return { status: 500, error: "Inernal server error" };
+  }
+};
+
+export const deleteAllProjects = async (projectIds: string[]) => {
+  try {
+    if (!Array.isArray(projectIds) || projectIds.length === 0) {
+      return { status: 400, error: "No project IDs provided" };
+    }
+
+    const checkUser = await onAuthenticateUser();
+    if (checkUser.status !== 200 || !checkUser.user) {
+      return { status: 403, error: "User not authenticated." };
+    }
+
+    const userId = checkUser.user.id;
+    const projectToDelete = await client.project.findMany({
+      where: {
+        id: {
+          in: projectIds,
+        },
+        userId: userId,
+      },
+    });
+
+    if (projectToDelete.length === 0) {
+      return { status: 404, error: "No projects found for the given Ids" };
+    }
+
+    const deletedProjects = await client.project.deleteMany({
+      where: {
+        id: {
+          in: projectToDelete.map((project) => project.id),
+        },
+      },
+    });
+
+    return {
+      status: 200,
+      message: `${deletedProjects.count} projects successfully deleted`,
+    };
+  } catch (error) {
+    console.error("🔴Error", error);
+    return { status: 500, error: "Inernal server error" };
+  }
+};
+
+export const getDeletedProjects = async () => {
+  try {
+    const checkUser = await onAuthenticateUser();
+    if (checkUser.status !== 200 || !checkUser.user) {
+      return { status: 403, error: "User not authenticated" };
+    }
+
+    const projects = await client.project.findMany({
+      where: {
+        userId: checkUser.user.id,
+        isDeleted: true,
+      },
+      orderBy: {
+        updatedAt: "desc",
+      },
+    });
+
+    if (projects.length === 0) {
+      return { status: 400, message: "No deleted projects found", data: [] };
+    }
+
+    return {
+      status: 200,
+      data: projects,
+      message:
+        projects.length === 0
+          ? "No deleted projects found"
+          : "Deleted projects loaded successfully",
+    };
+  } catch (error) {
+    console.error("🔴Error", error);
+    return { status: 500, error: "Inernal server error" };
   }
 };
