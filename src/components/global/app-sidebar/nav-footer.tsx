@@ -1,4 +1,5 @@
 "use client";
+import { buySubscription } from "@/actions/lemonSqueezy";
 import { Button } from "@/components/ui/button";
 import {
   SidebarMenu,
@@ -9,6 +10,7 @@ import { SignedIn, UserButton, useUser } from "@clerk/nextjs";
 import { User } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { toast } from "sonner";
 
 const NavFooter = ({ PrismaUser }: { PrismaUser: User }) => {
   const { isLoaded, isSignedIn, user } = useUser();
@@ -18,6 +20,24 @@ const NavFooter = ({ PrismaUser }: { PrismaUser: User }) => {
   if (!isLoaded || !isSignedIn) {
     return null;
   }
+
+  const handleUpgrading = async () => {
+    setLoading(true);
+    try {
+      const res = await buySubscription(PrismaUser.id);
+      if (res.status !== 200) {
+        throw new Error("Failed to upgrade");
+      }
+      router.push(res.url);
+    } catch (error) {
+      console.error(error);
+      toast.error("Error", {
+        description: "Something went wrong. Please try later",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <SidebarMenu>
@@ -38,7 +58,7 @@ const NavFooter = ({ PrismaUser }: { PrismaUser: User }) => {
                   className="w-full border-vivid bg-background-80 hover:bg-background-90 text-primary rounded-full font-bold"
                   variant={"default"}
                   size={"lg"}
-                  // onClickCapture={handleUpgrading}
+                  onClickCapture={handleUpgrading}
                 >
                   {loading ? "Upgrading..." : "Upgrade"}
                 </Button>
