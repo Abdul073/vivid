@@ -5,7 +5,7 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import { useSlideStore } from "@/store/useSlideStore";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 interface TableContentProps {
   content: string[][];
@@ -15,6 +15,7 @@ interface TableContentProps {
   initialRowSize?: number;
   initialColSize?: number;
 }
+
 const TableComponents = ({
   content,
   onChange,
@@ -25,14 +26,21 @@ const TableComponents = ({
 }: TableContentProps) => {
   const { currentTheme } = useSlideStore();
 
-  const [colSizes, setColSizes] = useState<number[]>([]);
-  const [rowSizes, setRowSizes] = useState<number[]>([]);
-  const [tableData, setTableData] = useState<string[][]>(() => {
-    if (content.length === 0 || content[0].length === 0) {
-      return Array(initialRowSize).fill(Array(initialColSize).fill(""));
-    }
-    return content;
-  });
+  // Initialize with proper values to avoid hydration mismatch
+  const initialContent =
+    content.length && content[0].length
+      ? content
+      : Array(initialRowSize).fill(Array(initialColSize).fill(""));
+
+  const [colSizes, setColSizes] = useState<number[]>(
+    initialContent[0].map(() => 100 / initialContent[0].length)
+  );
+
+  const [rowSizes, setRowSizes] = useState<number[]>(
+    initialContent.map(() => 100 / initialContent.length)
+  );
+
+  const [tableData, setTableData] = useState<string[][]>(initialContent);
 
   const handleResizeCol = (index: number, newSize: number) => {
     if (!isEditable) return;
@@ -51,11 +59,6 @@ const TableComponents = ({
     setTableData(newData);
     onChange(newData);
   };
-
-  useEffect(() => {
-    setRowSizes(new Array(tableData.length).fill(100 / tableData.length));
-    setColSizes(new Array(tableData[0].length).fill(100 / tableData[0].length));
-  }, [tableData]);
 
   if (isPreview)
     return (
@@ -141,7 +144,7 @@ const TableComponents = ({
                         style={{ color: currentTheme.fontColor }}
                         placeholder="Type Here"
                         readOnly={!isEditable}
-                      ></input>
+                      />
                     </div>
                   </ResizablePanel>
                 </React.Fragment>
