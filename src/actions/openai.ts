@@ -32,7 +32,8 @@ export const generateCreativePrompt = async (userPrompt: string) => {
         "Point 3",
         "Point 4",
         "Point 5",
-        "Point 6"
+        "Point 6",
+        "Point 7",
       ]
     }
   

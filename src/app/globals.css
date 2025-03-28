@@ -52,6 +52,8 @@ body {
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
     --creative-ai-gradient:linear-gradient(180deg, #F55C7A 0%, #F6BC66 100%);
+  
+    
     
   }
   .dark {
@@ -117,3 +119,25 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
+
+.bg-grid-white\/\[0\.02\] {
+  background-size: 30px 30px;
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
