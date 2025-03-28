@@ -52,7 +52,7 @@ export default function Hero() {
             className="text-gray-400 text-xl mb-8 max-w-2xl mx-auto"
           >
             Give your presentation promot to our AI and it will create the
-            layout in a second.
+            layout in just a second.
           </motion.p>
 
           <motion.div
