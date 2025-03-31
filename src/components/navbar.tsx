@@ -4,9 +4,30 @@ import { Button } from "@/components/ui/button";
 import { Bot, Menu } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import type React from "react"; // Added import for React
+import { useEffect, useState } from "react";
 
 export default function Navbar() {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return (
+      <nav className="flex items-center justify-between px-6 py-4 backdrop-blur-sm border-b border-white/10">
+        {/* Simple static version for server-side rendering */}
+        <div className="flex items-center space-x-2">
+          <div className="w-8 h-8 bg-gray-700 rounded" />
+          <span className="text-white font-medium text-xl">VIVID</span>
+        </div>
+        <Button variant="ghost" size="icon" className="md:hidden text-white">
+          <div className="w-6 h-6 bg-gray-700 rounded" />
+        </Button>
+      </nav>
+    );
+  }
+
   return (
     <motion.nav
       initial={{ y: -100 }}
@@ -26,10 +47,10 @@ export default function Navbar() {
       </div>
 
       <div className="hidden md:flex items-center space-x-4">
-        <Button variant="ghost" className="text-white hover:text-purple-400">
-          <Link href="/sign-in">Sign In</Link>
-        </Button>
-        <Button className="bg-purple-600 hover:bg-purple-700 text-white">
+        <Button
+          className="bg-purple-600 hover:bg-purple-700 text-white"
+          asChild
+        >
           <Link href="sign-in">Get started</Link>
         </Button>
       </div>
